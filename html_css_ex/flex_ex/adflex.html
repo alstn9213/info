@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./adflex.css">
+</head>
+<body>
+  <h1>Flex 연습예제</h1>
+  <h2>1. justify-content(가로축 정렬)</h2>
+  <p>주축이 가로일 때, 가로 방향 배치를 제어합니다.</p>
+  <h2>1. justify-content (가로축 정렬)</h2>
+  <p>➡️ 주축이 가로일 때, 가로 방향 배치를 제어합니다.</p>
+  <div class="container" style="justify-content: flex-start;">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+  </div>
+  <div class="container" style="justify-content: center;">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+  </div>
+  <div class="container" style="justify-content: space-between;">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+  </div>
+  <div class="container" style="justify-content: space-around;">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+  </div>
+  <div class="container" style="justify-content: space-evenly;">
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+  </div>
+  
+  <h2>2. align-items (세로축 정렬)</h2>
+  <p>➡️ 교차축(세로 방향) 정렬을 제어합니다.</p>
+  <div class="container" style="align-items: flex-start;">
+    <div class="box">A</div>
+    <div class="box">B</div>
+    <div class="box">C</div>
+  </div>
+  <div class="container" style="align-items: center;">
+    <div class="box">A</div>
+    <div class="box">B</div>
+    <div class="box">C</div>
+  </div>
+  <div class="container" style="align-items: flex-end;">
+    <div class="box">A</div>
+    <div class="box">B</div>
+    <div class="box">C</div>
+  </div>
+  <div class="container" style="align-items: stretch;">
+    <div class="box" style="height:auto;">A</div>
+    <div class="box" style="height:auto;">B</div>
+    <div class="box" style="height:auto;">C</div>
+  </div>
+  <h2>3. flex-direction (주축 방향 바꾸기)</h2>
+  <p>➡️ 기본은 row(가로). column으로 바꾸면 세로 배치.</p>
+  <div class="container" style="flex-direction: row; justify-content:center; align-items:center;">
+    <div class="box">X</div>
+    <div class="box">Y</div>
+    <div class="box">Z</div>
+  </div>
+  <div class="container" style="flex-direction: column; justify-content:center; align-items:center;">
+    <div class="box">X</div>
+    <div class="box">Y</div>
+    <div class="box">Z</div>
+
+  
+</body>
+</html>

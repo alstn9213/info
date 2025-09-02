@@ -1,0 +1,13 @@
+@import url(../01_todolist.css);
+
+/* 01_todolist.css에서 import해서 가지고온 css에도  .input-group input이 있지만 여기에 추가 조건을 더 걸어줬다.  */
+.input-group input {
+  /* 기존은 todolist와 동일하고 얘만 추가됨 */
+  width: 0;
+}
+
+/* 그리고 이 id선택자의 경우 todolist에는 없던 것이기 때문에 여기서 추가적으로 설정해줘야한다. */
+#price-input {
+  /* 얘가 더 디테일한 조건이기 때문에 input-group input과 동일한 속성이 있다면, 이부분의 것이 적용된다. */
+  flex-grow: 0.5;
+}
