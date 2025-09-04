@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>설문조사 폼</title>
+  <link rel="stylesheet" href="./survey.css">
+</head>
+<body>
+  <div class="container">
+    <h1>설문조사</h1>
+    <form id="survey-form">
+
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="text" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">나이</label>
+        <select id="age" required>
+          <option value="">선택하세요</option>
+          <option value="10대">10대</option>
+          <option value="20대">20대</option>
+          <option value="30대">30대</option>
+          <option value="40대 이상">40대 이상</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>서비스 만족도</label>
+        <div class="options">
+          <label>
+            <input type="radio" name="satisfaction" value="매우 만족" required>매우 만족
+          </label>
+          <label>
+            <input type="radio" name="satisfaction" value="만족">만족
+          </label>
+          <label>
+            <input type="radio" name="satisfaction" value="보통">보통
+          </label>
+          <label>
+            <input type="radio" name="satisfaction" value="불만족">불만족
+          </label>    
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>관심있는 분야(복수선택가능)</label>
+        <div class="options">
+          <label>
+            <input type="checkbox" value="웹개발">웹개발
+          </label>
+          <label>
+            <input type="checkbox" value="모바일앱">모바일앱
+          </label>
+          <label>
+            <input type="checkbox" value="데이터분석">데이터분석
+          </label>
+          <label>
+            <input type="checkbox" value="인공지능">인공분석
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="feedback">추가의견</label>
+        <textarea id="feedback" rows="4" placeholder="자유롭게 의견을 제시해주세요"></textarea>
+      </div>
+
+      <button type="submit">제출하기</button>
+    </form>
+
+    <div id="result" style="display: none;">
+      <h2>제출 결과</h2>
+      <p id="output"></p>
+    </div>
+  </div>
+  <script src="./survey.js"></script>
+</body>
+</html>

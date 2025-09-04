@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>설문조사 폼 (localStorage 확장)</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #444;
+    }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+    .options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .options label {
+      font-weight: normal;
+      cursor: pointer;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4a90e2;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #357ab8;
+    }
+    #result {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f1f7ff;
+      border: 1px solid #cdddf8;
+      border-radius: 8px;
+    }
+    #result h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>설문조사</h1>
+    <form id="survey-form">
+      <!-- 이름 -->
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" required>
+      </div>
+
+      <!-- 이메일 -->
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <!-- 나이 -->
+      <div class="form-group">
+        <label for="age">나이</label>
+        <select id="age" required>
+          <option value="">선택하세요</option>
+          <option value="10대">10대</option>
+          <option value="20대">20대</option>
+          <option value="30대">30대</option>
+          <option value="40대 이상">40대 이상</option>
+        </select>
+      </div>
+
+      <!-- 만족도 (라디오 버튼) -->
+      <div class="form-group">
+        <label>서비스 만족도</label>
+        <div class="options">
+          <label><input type="radio" name="satisfaction" value="매우 만족" required> 매우 만족</label>
+          <label><input type="radio" name="satisfaction" value="만족"> 만족</label>
+          <label><input type="radio" name="satisfaction" value="보통"> 보통</label>
+          <label><input type="radio" name="satisfaction" value="불만족"> 불만족</label>
+        </div>
+      </div>
+
+      <!-- 관심사 (체크박스) -->
+      <div class="form-group">
+        <label>관심 있는 분야 (복수 선택 가능)</label>
+        <div class="options">
+          <label><input type="checkbox" value="웹 개발"> 웹 개발</label>
+          <label><input type="checkbox" value="모바일 앱"> 모바일 앱</label>
+          <label><input type="checkbox" value="데이터 분석"> 데이터 분석</label>
+          <label><input type="checkbox" value="인공지능"> 인공지능</label>
+        </div>
+      </div>
+
+      <!-- 자유 의견 -->
+      <div class="form-group">
+        <label for="feedback">추가 의견</label>
+        <textarea id="feedback" rows="4" placeholder="자유롭게 의견을 적어주세요."></textarea>
+      </div>
+
+      <!-- 제출 버튼 -->
+      <button type="submit">제출하기</button>
+    </form>
+
+    <!-- 결과 영역 -->
+    <div id="result" style="display: none;">
+      <h2>제출 결과</h2>
+      <p id="output"></p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("survey-form");
+    const resultDiv = document.getElementById("result");
+    const output = document.getElementById("output");
+
+    // 결과 표시 함수
+    function displayResult(data) {
+      output.innerHTML = `
+        <strong>이름:</strong> ${data.name}<br>
+        <strong>이메일:</strong> ${data.email}<br>
+        <strong>나이:</strong> ${data.age}<br>
+        <strong>만족도:</strong> ${data.satisfaction}<br>
+        <strong>관심 분야:</strong> ${data.interests.join(", ") || "선택 없음"}<br>
+        <strong>추가 의견:</strong> ${data.feedback || "없음"}
+      `;
+      resultDiv.style.display = "block";
+    }
+
+    // localStorage에서 불러오기
+    window.addEventListener("load", () => {
+      const savedData = localStorage.getItem("surveyData");
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        displayResult(data);
+      }
+    });
+
+    // 제출 이벤트 처리
+    form.addEventListener("submit", function(event) {
+      event.preventDefault(); // 새로고침 방지
+
+      // 입력값 수집
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const age = document.getElementById("age").value;
+      const satisfaction = document.querySelector("input[name='satisfaction']:checked").value;
+      const interests = Array.from(document.querySelectorAll("input[type='checkbox']:checked"))
+        .map(cb => cb.value);
+      const feedback = document.getElementById("feedback").value;
+
+      const surveyData = { name, email, age, satisfaction, interests, feedback };
+
+      // localStorage 저장
+      localStorage.setItem("surveyData", JSON.stringify(surveyData));
+
+      // 결과 표시
+      displayResult(surveyData);
+    });
+  </script>
+</body>
+</html>
