@@ -15,8 +15,8 @@ public interface UserDetails extends Serializable {
 그래서 UserDetails 객체를 만들때 우리가 흔히 쓰는 건 User 클래스의 빌더이다.
 ```java
 import org.springframework.security.core.userdetails.User;
-
-UserDetails user = User.builder()
+// UserDetails는 인테페이스이기 때문에 객체로 만들 수 없다. 아래의 예시는 User를 사용해 객체를 만든 것이고 UserDetails는 타입을 선언한 것이다.
+        UserDetails user = User.builder()
     .username("test")
     .password("1234")
     .roles("USER")
@@ -50,3 +50,4 @@ public class User implements UserDetails {
 
 ```
 즉, 이건 롬복의 @Builder가 아니라 스프링 시큐리티 개발자들이 직접 작성한 빌더 패턴 클래스이다.(직접 UserBuilder를 구현해둔 형태.)
+
