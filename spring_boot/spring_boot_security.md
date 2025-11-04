@@ -147,3 +147,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 }
 
 ```
+
+## SecurityContext
+
+1. SecurityContextHolder (SecurityContext를 담는 보관함)
+
+- 특징
+    - SecurityContextHolder는 이 보관함을 어떻게 저장하고 꺼낼지(전략)를 관리하는 유틸리티 클래스.
+    - 가장 중요한 점은, 기본적으로 ThreadLocal 전략을 사용한다는 것이다.
+    ThreadLocal이란? 현재 요청을 처리하는 스레드(Thread) 전용 저장소다. HTTP 요청이 들어오면 서버(톰캣 등)가 스레드를 하나 할당하는데, 그 요청이 끝날 때까지 SecurityContextHolder를 통해 저장된 정보는 오직 그 스레드 안에서만 접근할 수 있다. 그래서 다른 요청(다른 스레드)의 정보와 섞이지 않는다.
+
+2. SecurityContext (Authentication 객체를 담는 상자)
+
+- 특징
+    - `인터페이스(interface)`. (기본 구현체는 SecurityContextImpl)
+    - SecurityContextHolder라는 보관함에는 바로 이 SecurityContext '상자'가 들어간다. 이 상자의 유일한 임무는 Authentication 객체(신분증)를 보관하는 것이다. SecurityContext는 '락커룸 안에 넣는 손님의 개인 소지품 상자'이다.
+
+3. Authentication (실제 인증 정보를 담고 있는 신분증 또는 출입증)
+
+- 특징
+    - `인터페이스(interface)`
+    - 여기에는 사용자에 대한 핵심 정보가 모두 들어있다.
+
+- Authentication의 메서드
+    getPrincipal(): "누구인가?" (예: 사용자의 ID, 또는 UserDetails 객체 자체)  // Principal : 본인
+    getCredentials(): "무엇으로 인증했는가?" (예: 비밀번호. 인증이 완료된 후에는 보안을 위해 보통 null로 지운다.)
+    getAuthorities(): "무엇을 할 수 있는가?" (예: ROLE_USER, ROLE_ADMIN 같은 권한 목록)
+
+비유: Authentication은 '상자 안에 들어있는 손님의 신분증과 출입 카드'이다. 이 카드에는 이름(Principal)과 출입 가능 구역(Authorities)이 적혀 있다.
+
+### 요약 및 흐름
+
+이 세 가지 구성 요소를 하나로 합치면 다음과 같은 흐름이 된다.
+
+1. 사용자가 로그인을 시도한다. (예: ID/PW 입력)
+
+2. Spring Security가 이 정보를 바탕으로 Authentication 객체(미인증 상태의 신분증)를 만든다.
+
+3. AuthenticationManager가 이 '신분증'이 진짜인지 확인(인증)한다.
+
+4. 인증에 성공하면, Spring Security는 새로운 Authentication 객체(인증 완료 상태, 권한 정보 포함)를 생성한다.
+
+5. 이 '인증된 신분증'(Authentication)을 '상자'(SecurityContext)에 넣는다.
+
+6. 이 '상자'(SecurityContext)를 '현재 스레드 전용 보관함'(SecurityContextHolder)에 저장한다.
+
+7. 이제 요청이 처리되는 동안, 애플리케이션의 어느 곳에서든 SecurityContextHolder를 통해 현재 사용자의 정보를 꺼내 쓸 수 있다.
